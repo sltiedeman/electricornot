@@ -27,6 +27,8 @@ a {
 	margin: auto;
 	width: 60%;
 	overflow: hidden;
+	padding-top: 40px;
+	padding-bottom: 80px;
 }
 
 .vote-button{
@@ -36,7 +38,16 @@ a {
 /*Standingds styling*/
 #standings ul li{
 	list-style-type: none;
+	padding: 20px 0 20px 0;
 }
 #standings ul li img{
 	max-width: 200px;
 }
+
+.up{
+	font-size: 24px;
+	width: 200px;
+	text-align: center;
+	display: inline-block;
+}
+
