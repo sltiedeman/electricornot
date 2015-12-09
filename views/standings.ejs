@@ -1,0 +1,23 @@
+<% include head %>
+<body>
+
+<header>
+<% include header %>
+</header>
+
+<div id="standings">
+	<ul>
+		<% for(i=0; i<photos.length; i++){ %>
+
+		<li>
+			<img src="<%= photos[i].image %>">
+		</li>
+		<% } %>
+	</ul>
+</div>
+	
+<footer>
+	<% include footer %>
+</footer>
+</body>
+</html>

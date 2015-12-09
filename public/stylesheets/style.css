@@ -1,0 +1,41 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#photos{
+	margin-top: 30px;
+	text-align: center;
+	height: 250px;
+}
+#photos img{
+	max-width: 400px;
+}
+
+#photos-wrapper{
+	width: 60%;
+	margin: auto;
+	text-align: center;
+}
+
+.button-holder{
+	text-align: center;	
+	margin: auto;
+	width: 60%;
+	overflow: hidden;
+}
+
+.vote-button{
+	display: inline-block;
+}
+
+#standings ul li{
+	list-style-type: none;
+}
+#standings ul li img{
+	max-width: 200px;
+}

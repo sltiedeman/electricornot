@@ -1,0 +1,35 @@
+<% include head %>
+<body>
+
+<header>
+	<% include header %>
+</header>
+	
+<div id="photos-wrapper">
+	<h1>A Node.js Voting Game</h1>
+	<div id="photos">
+		
+		<img src="<%= photos.address %>">
+
+	</div>
+
+	
+	<div class="button-holder">
+  	    <form class="vote-button" action="./electric" method="post">
+  	        <input type="hidden" name="photo" value="<%= photos.address %>" />
+  	        <input type="submit" class="btn btn-info" value="Electric!" />
+  	    </form>
+  	    <form class="vote-button" action="./poser" method="post">
+  	        <input type="hidden" name="photo" value="<%= photos.address %>" />
+  	        <input type="submit" class="btn btn-info" value="Poser" />
+  	    </form>
+  	</div>
+
+
+
+</div>
+<footer>
+	<% include footer %>
+</footer>
+</body>
+</html>
