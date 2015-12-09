@@ -6,17 +6,19 @@
 </header>
 
 <div id="standings">
-	<div class="new-user-button">
+	<!-- <div class="new-user-button">
 		<form class="vote-button" action="./reset" method="post">
 			<input type="submit" class="btn btn-primary" value="New User!"/>
 		</form>
-	</div>
+	</div> -->
+	<h1>Most Liked Vehicles</h1>
 	<ul>
 		<% for(i=0; i<photosStandings.length; i++){ %>
 
 		<li>
 			<img src="<%= photosStandings[i].address %>">
-			<p class="up"><%= photosStandings[i].totalVotes %> Votes</p>
+			<p class="up"><%= photosStandings[i].totalVotes %> 
+			<span class="glyphicon glyphicon-thumbs-up"></span></p>
 		</li>
 		<% } %>
 	</ul>

@@ -5,13 +5,16 @@
 	<% include header %>
 </header>
 	
-<div>
+<div id="add-wrapper">
+	<h1 class="add-title">Add Your Own Vehicle Image</h1>
+	<div>
 
-	<form class="vote-button" action="./add" method="post">
-  	    <input type="text" name="photoUrl" placeholder="Enter Image URL"/>
-  	    <input type="submit" class="btn btn-info" value="Electric!" />
-  	</form>
+		<form class="vote-button" action="./add" method="post">
+	  	    <input class="add-input" type="url" minlength="8" name="photoUrl" placeholder="Enter Image URL"/>
+	  	    <input type="submit" class="btn btn-success" value="Submit" />
+	  	</form>
 
+	</div>
 </div>
 <footer>
 	<% include footer %>

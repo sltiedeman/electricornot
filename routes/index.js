@@ -4,22 +4,23 @@ var MongoClient = require('mongodb').MongoClient;
 var photoStandings = [];
 var allPhotos;
 var mongoUrl = 'mongodb://localhost:27017/photos';
+var db;
+
 /* GET home page. */
 
-MongoClient.connect('mongodb://localhost:27017/photos', function(error,db){
-	db.collection('photos').find().toArray(function(error, result){
+MongoClient.connect('mongodb://localhost:27017/photos', function(error,database){
+	database.collection('photos').find().toArray(function(error, result){
 		allPhotos = result;
-			db.close();
-
+		db = database;
 	});
 });
+
 
 router.get('/', function(req, res, next) {
 		//1. Get all pictures from the MongoDB
 		
 			//2. Get the currrent user from MongoDB 
 		var currIP = req.ip;
-		MongoClient.connect('mongodb://localhost:27017/photos', function(error,db){
 			db.collection('users').find({ip:currIP}).toArray(function(error, userResult){
 				if(userResult.length > 0){
 					var index = userResult.length-1;
@@ -40,7 +41,6 @@ router.get('/', function(req, res, next) {
 
 			});
 
-		});
 
 	//index page should load random picture/item
 	//1. get all pictures from the MongoDB
@@ -56,7 +56,6 @@ router.get('/standings', function(req, res, next) {
 	//2. Sort them by highest likes
 	//3. res.render the standings view and pass it the sorted photo array 
 
-	MongoClient.connect(mongoUrl, function(error, db){
 		//1. Get all pictures from the MongoDB
 		db.collection('photos').find().toArray(function(error, result){
 			//Pass all votes
@@ -66,11 +65,9 @@ router.get('/standings', function(req, res, next) {
 			});
 
 			res.render('standings', {photosStandings: result});
-					db.close();
 
 
 		});	
-	});
 });
 
 router.get('/add', function(req, res, next){
@@ -80,22 +77,17 @@ router.get('/add', function(req, res, next){
 
 router.post('/add', function(req, res, next){
 	console.log(req.body);
-	MongoClient.connect(mongoUrl, function(error, db){
-		db.collection('photos').insert(
-	      { "address" : req.body.photoUrl}
+		db.collection('photos').save(
+	      { "address" : req.body.photoUrl, "totalVotes":0}
 	   );
-	});
 	res.redirect('/');
 })
 
 
 router.post('/reset', function(req, res, next){
-	MongoClient.connect('mongodb://localhost:27017/photos', function(error,db){
 		db.collection('photos').find().toArray(function(error, result){
-			allPhotos = result;
-			db.close();
+			allPhotos = result;			
 		});
-	});
 	res.redirect('/');
 });
 
@@ -109,7 +101,6 @@ router.post('*', function(req,res,next){
 	}else{
 		res.redirect('/');
 	}
-	MongoClient.connect(mongoUrl, function(error, db){
 		db.collection('photos').find({address: req.body.photo}).toArray(function(error, result){
 			console.log(result);
 			var updateVotes = function(db, votes, callback) {
@@ -126,27 +117,20 @@ router.post('*', function(req,res,next){
 			        $currentDate: { "lastModified": true }
 			      }, function(err, results) {
 			      // console.log(results);
-			      	db.close();
 			      	callback();
 			   });
 			};
 
-			MongoClient.connect(mongoUrl, function(error, db) {
-				updateVotes(db,result[0].totalVotes, function() {});
-			});
+			updateVotes(db,result[0].totalVotes, function() {});
 		});
-	});	
 
-	MongoClient.connect(mongoUrl, function(error, db){
 
 		db.collection('users').insertOne( {
 	    	ip: req.ip,
 	    	vote: page,
 	    	image: req.body.photo
 		});
-		db.close();
 		res.redirect('/');
-	});	
 });
 
 
