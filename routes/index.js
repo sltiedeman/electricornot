@@ -93,46 +93,70 @@ router.post('/reset', function(req, res, next){
 
 
 
-router.post('*', function(req,res,next){
-	if(req.url == '/electric'){
-		var page = 'electric';
-	}else if(req.url == '/poser'){
-		var page = 'poser';
-	}else{
-		res.redirect('/');
-	}
-		db.collection('photos').find({address: req.body.photo}).toArray(function(error, result){
-			console.log(result);
-			var updateVotes = function(db, votes, callback) {
-				if(isNaN(votes)){
-					votes = 0;
-				}
-				if(page=='electric'){var newVotes = votes+1;}
-				else{var newVotes = votes-1;}
-				
-			   db.collection('photos').updateOne(
-			      { "address" : req.body.photo },
-			      {
-			        $set: { "totalVotes": newVotes },
-			        $currentDate: { "lastModified": true }
-			      }, function(err, results) {
-			      // console.log(results);
-			      	callback();
-			   });
-			};
+router.post('/electric', function(req,res,next){
+	
+	db.collection('photos').find({address: req.body.photo}).toArray(function(error, result){
+		console.log(result);
+		var updateVotes = function(db, votes, callback) {
+			if(isNaN(votes)){
+				votes = 0;
+			}
+			var newVotes = votes+1;
+			
+		   db.collection('photos').updateOne(
+		      { "address" : req.body.photo },
+		      {
+		        $set: { "totalVotes": newVotes },
+		        $currentDate: { "lastModified": true }
+		      }, function(err, results) {
+		      // console.log(results);
+		      	callback();
+		   });
+		};
 
-			updateVotes(db,result[0].totalVotes, function() {});
-		});
+		updateVotes(db,result[0].totalVotes, function() {});
+	});
 
 
-		db.collection('users').insertOne( {
-	    	ip: req.ip,
-	    	vote: page,
-	    	image: req.body.photo
-		});
-		res.redirect('/');
+	db.collection('users').insertOne( {
+    	ip: req.ip,
+    	vote: 'electric',
+    	image: req.body.photo
+	});
+	res.redirect('/');
 });
 
+router.post('/poser', function(req,res,next){
+	db.collection('photos').find({address: req.body.photo}).toArray(function(error, result){
+		console.log(result);
+		var updateVotes = function(db, votes, callback) {
+			if(isNaN(votes)){
+				votes = 0;
+			}
+			var newVotes = votes-1;
+			
+		   db.collection('photos').updateOne(
+		      { "address" : req.body.photo },
+		      {
+		        $set: { "totalVotes": newVotes },
+		        $currentDate: { "lastModified": true }
+		      }, function(err, results) {
+		      // console.log(results);
+		      	callback();
+		   });
+		};
+
+		updateVotes(db,result[0].totalVotes, function() {});
+	});
+
+
+	db.collection('users').insertOne( {
+    	ip: req.ip,
+    	vote: 'poser',
+    	image: req.body.photo
+	});
+	res.redirect('/');
+});
 
 
 
