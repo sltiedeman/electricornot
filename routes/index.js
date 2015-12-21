@@ -3,12 +3,15 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var photoStandings = [];
 var allPhotos;
-var mongoUrl = 'mongodb://localhost:27017/photos';
+var mongoUrl = 
+	process.env.MONGOLAB_URI ||
+	process.env.MONGOHQ_URL ||
+	'mongodb://localhost:27017/photos';
 var db;
 
 /* GET home page. */
 
-MongoClient.connect('mongodb://localhost:27017/photos', function(error,database){
+MongoClient.connect(mongoUrl, function(error,database){
 	database.collection('photos').find().toArray(function(error, result){
 		allPhotos = result;
 		db = database;
