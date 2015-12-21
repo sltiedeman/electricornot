@@ -5,7 +5,10 @@ var Photo = require('../models/photos');
 var Users = require('../models/users');
 var photoStandings = [];
 var allPhotos;
-var mongoUrl = 'mongodb://localhost:27017/photos';
+var mongoUrl = 
+	process.env.MONGOLAB_URI ||
+	process.env.MONGOHQ_URL ||
+	'mongodb://localhost:27017/photos';
 var db;
 mongoose.connect(mongoUrl);
 
