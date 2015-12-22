@@ -8,7 +8,6 @@ var mongoUrl =
 	process.env.MONGOHQ_URL ||
 	'mongodb://localhost:27017/photos';
 var db;
-
 /* GET home page. */
 
 MongoClient.connect(mongoUrl, function(error,database){
@@ -21,28 +20,27 @@ MongoClient.connect(mongoUrl, function(error,database){
 
 router.get('/', function(req, res, next) {
 		//1. Get all pictures from the MongoDB
-		
-			//2. Get the currrent user from MongoDB 
-		var currIP = req.ip;
-			db.collection('users').find({ip:currIP}).toArray(function(error, userResult){
-				if(userResult.length > 0){
-					var index = userResult.length-1;
-					var addressCheck = userResult[index].image;
-					for(i=0; i<allPhotos.length; i++){
-						if(allPhotos[i].address == addressCheck){
-							allPhotos.splice(i,1);
-						}
+			//2. Get the currrent user from MongoDB
+	var currIP = req.ip;
+		db.collection('users').find({ip:currIP}).toArray(function(error, userResult){
+			if(userResult.length > 0){
+				var index = userResult.length-1;
+				var addressCheck = userResult[index].image;
+				for(i=0; i<allPhotos.length; i++){
+					if(allPhotos[i].address == addressCheck){
+						allPhotos.splice(i,1);
 					}
 				}
-				if(allPhotos.length != 0){
-					var randomNum = Math.floor(Math.random()*allPhotos.length);
-				}else{
-					res.redirect('/standings');
-				}
-				photoStandings = userResult;
-				res.render('index', { photos: allPhotos[randomNum]});
+			}
+			if(allPhotos.length != 0){
+				var randomNum = Math.floor(Math.random()*allPhotos.length);
+			}else{
+				res.redirect('/standings');
+			}
+			photoStandings = userResult;
+			res.render('index', { photos: allPhotos[randomNum]});
 
-			});
+		});
 
 
 	//index page should load random picture/item
@@ -52,6 +50,15 @@ router.get('/', function(req, res, next) {
 	//4. Load all those photos into an array.
 	//5. Choose a random image from the array and set it to a var
 	//6. res.render the index view and send it the photo
+});
+
+router.get('/intro', function(req, res, next){
+	res.render('intro');
+});
+
+router.post('/intro', function(req, res, next){
+	counter++;
+	res.redirect('/');
 });
 
 router.get('/standings', function(req, res, next) {
