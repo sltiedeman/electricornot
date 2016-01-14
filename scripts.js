@@ -1,9 +1,9 @@
 setTimeout(function(){
 	var windowHeight = window.innerHeight;
+	$('#intro-page-wrapper').css('height', windowHeight + 'px');
 	var contentHeight = $('#intro-page').height();
-	console.log(contentHeight);
-	var paddingAdjust = parseInt((windowHeight - contentHeight)/2)
-	$('#intro-page').css('padding-top', paddingAdjust + 'px');
+	var paddingAdjust = parseInt((windowHeight - contentHeight-25)/2);
+	$('#logo').css('padding-top', paddingAdjust + 'px');
 },10);
 
 
